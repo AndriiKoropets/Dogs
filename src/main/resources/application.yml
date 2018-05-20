@@ -1,0 +1,20 @@
+server:
+  port: 8080
+  sessionTimeout: 1800
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/sdwan
+    username: sdwan
+    password: pass123!
+    connection-timeout: 15
+    validation-query: select 1
+    test-on-borrow: true
+  jpa:
+    database: PostgreSQL
+    hibernate:
+      naming_strategy: org.hibernate.cfg.DefaultComponentSafeNamingStrategy
+      show-sql: false
+      format_sql: false
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: true
