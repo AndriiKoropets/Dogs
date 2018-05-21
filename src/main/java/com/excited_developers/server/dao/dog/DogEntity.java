@@ -1,6 +1,5 @@
 package com.excited_developers.server.dao.dog;
 
-
 import com.excited_developers.server.dao.owner.OwnerEntity;
 import com.excited_developers.server.dao.tenant.TenantEntity;
 import lombok.AccessLevel;
@@ -33,6 +32,7 @@ public class DogEntity {
   @GeneratedValue(strategy = SEQUENCE)
   private Long id;
   private String name;
+  private String breed;
   @ManyToOne
   private OwnerEntity owner;
 //  @ManyToMany
