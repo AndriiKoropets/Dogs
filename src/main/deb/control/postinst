@@ -1,0 +1,57 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    configure)
+        if [ -h /usr/bin/dogs ]; then
+            rm -f /usr/bin/dogs
+        fi
+
+        if [ -h /etc/dogs/conf ]; then
+            rm -f /etc/dogs/conf
+        fi
+
+        if [ ! -d /etc/dogs ]; then
+            mkdir -p /etc/dogs
+        fi
+
+        if [ ! -d /var/log/koropets ]; then
+            mkdir -p /var/log/koropets
+        fi
+
+        chown -R andrii:andrii /var/log/koropets
+        chmod 755 /var/log/koropets
+
+        ln -s /usr/lib/dogs/bin/dogs /usr/bin/dogs
+        ln -s /usr/lib/dogs/conf /etc/dogs/conf
+
+        if [ -f /usr/lib/dogs/bin/dogs.default ]; then
+            mv /usr/lib/dogs/bin/dogs.default /etc/default/dogs
+        fi
+
+        if [ -f /usr/lib/dogs/bin/dogs.init.d ]; then
+            mv /usr/lib/dogs/bin/dogs.init.d /etc/init.d/dogs
+        fi
+
+        if [ -x "/etc/init.d/dogs" ]; then
+            if [ ! -e "/etc/init/dogs.conf" ]; then
+                if ! chkconfig_loc="$(type -p "chkconfig")" || [ -z "$chkconfig_loc" ]; then
+                    update-rc.d -f dogs defaults >/dev/null || exit 1
+                else
+                    chkconfig --add dogs >/dev/null || exit 1
+                fi
+            fi
+        fi
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

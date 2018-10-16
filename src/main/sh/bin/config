@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function scriptDir()
+{
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    echo $DIR
+}
+
+function homeDir()
+{
+    DIR="$( cd -P "$( scriptDir )/.." && pwd )"
+    echo $DIR
+}
+
+export SERVER_HOME="$( homeDir )"
+export LIB=$SERVER_HOME/lib
+export CONF=$SERVER_HOME/conf
+
+if [ -z $SERVER_LOG_DIR ]; then
+    SERVER_LOG_DIR=/var/log/dogs
+fi
+
+export SERVER_LOG_DIR
+
+if [ -z $SERVER_LOG_SUFIX ]; then
+    SERVER_LOG_SUFIX=
+fi
+
+export SERVER_LOG_SUFIX
+
+export ENUM_FILES_PATH
+
+JAVA_OPTIONS="$JAVA_OPTIONS -Djava.awt.headless=true -Dfile.encoding=UTF8 -Dserver_log_dir=$SERVER_LOG_DIR -Dserver_log_sufix=$SERVER_LOG_SUFIX -Dserver_home_dir=$SERVER_HOME -DenumFilesPath=$ENUM_FILES_PATH"
+
+export JAVA_OPTIONS
+
+export JETTY_HOME="${SERVER_HOME}"
+export JETTY_RUN="${SERVER_HOME}"
+

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    install|upgrade)
+        if ! id andrii > /dev/null 2>&1 ; then
+                # Adding system user: andrii.
+                adduser --system --no-create-home --group --disabled-password --shell /bin/false andrii  >/dev/null
+        fi
+    ;;
+
+    abort-upgrade)
+    ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
+

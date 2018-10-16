@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+if [ -x "/etc/init.d/dogs" ]; then
+    if ! service_loc="$(type -p "service")" || [ -z "$service_loc" ]; then
+        invoke-rc.d dogs stop || exit $?
+    else
+        service dogs stop || exit $?
+    fi
+fi
+
+case "$1" in
+    remove|upgrade|deconfigure)
+    ;;
+
+    failed-upgrade)
+    ;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

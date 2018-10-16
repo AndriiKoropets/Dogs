@@ -1,0 +1,8 @@
+Package: dogs-[[artifactId]]
+Version: [[version]]
+Section: dogs
+Priority: optional
+Architecture: all
+Maintainer: koropets_project
+Description: Koropets project for improvement. Jenkins build [[build.version]]
+Distribution: development

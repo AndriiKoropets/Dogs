@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    purge)
+        if [ -x "/etc/init.d/dogs" ]; then
+            if ! chkconfig_loc="$(type -p "chkconfig")" || [ -z "$chkconfig_loc" ]; then
+                update-rc.d -f dogs remove >/dev/null || exit 1
+            else
+                chkconfig --del dogs >/dev/null || exit 1
+            fi
+            rm -f /etc/init.d/dogs
+        fi
+    ;;
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

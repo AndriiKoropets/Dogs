@@ -1,7 +1,6 @@
 package com.excited_developers.server.dao.dog;
 
 import com.excited_developers.server.dao.owner.OwnerEntity;
-import com.excited_developers.server.dao.tenant.TenantEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -14,9 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
-
-import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
