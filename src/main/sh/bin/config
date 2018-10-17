@@ -23,7 +23,7 @@ export LIB=$SERVER_HOME/lib
 export CONF=$SERVER_HOME/conf
 
 if [ -z $SERVER_LOG_DIR ]; then
-    SERVER_LOG_DIR=/var/log/dogs
+    SERVER_LOG_DIR=/var/log/koropets
 fi
 
 export SERVER_LOG_DIR

@@ -39,7 +39,7 @@ DESC="Koropets dogs project"
 # Common part
 
 DEFAULT=/etc/default/$NAME
-SERVER_LOG_DIR=/var/log/dogs
+SERVER_LOG_DIR=/var/log/koropets
 SERVER_CONF_DIR=/etc/$NAME/conf
 SERVER_RUN_DIR=/var/run/dogs
 SERVER_HOME=/usr/lib/$NAME
@@ -102,7 +102,7 @@ start() {
   fi
 
   log_success_msg "Starting $desc ($NAME): "
-  /bin/su -s /bin/bash -c "/bin/bash -c 'echo \$\$ >${SERVER_PID_FILE} && exec ${EXEC_PATH} start >>${SERVER_LOG_DIR}/${NAME}-server${SERVER_LOG_SUFIX}.init.log 2>&1' &" $SERVER_USER
+  /bin/su -s /bin/bash -c "/bin/bash -c 'echo \$\$ >${SERVER_PID_FILE} && exec ${EXEC_PATH} start >>${SERVER_LOG_DIR}/${NAME}${SERVER_LOG_SUFIX}.init.log 2>&1' &" $SERVER_USER
   RETVAL=$?
   [ $RETVAL -eq 0 ] && touch $LOCKFILE
   return $RETVAL
@@ -118,7 +118,7 @@ stop() {
 
   SERVER_PID=`cat $SERVER_PID_FILE`
   if [ -n $SERVER_PID ]; then
-    /bin/su -s /bin/bash -c "${EXEC_PATH} stop >>${SERVER_LOG_DIR}/${NAME}-server${SERVER_LOG_SUFIX}.shutdown.log 2>&1" $SERVER_USER
+    /bin/su -s /bin/bash -c "${EXEC_PATH} stop >>${SERVER_LOG_DIR}/${NAME}${SERVER_LOG_SUFIX}.shutdown.log 2>&1" $SERVER_USER
     for i in `seq 1 ${SERVER_SHUTDOWN_TIMEOUT}` ; do
       kill -15 ${SERVER_PID} &>/dev/null || break
       sleep 1

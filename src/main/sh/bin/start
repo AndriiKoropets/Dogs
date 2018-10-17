@@ -10,7 +10,7 @@ function start()
 
 	echo "Starting $SERVER_NAME..."
 
-    exec java -cp "$CONF:$LIB/*:$SERVER_HOME/job.jar" $JAVA_OPTIONS $SERVER_MAIN_CLASS $CONF/dogs.properties >>${SERVER_LOG_DIR}/${NAME}-server${SERVER_LOG_SUFIX}.out 2>&1
+    exec java -cp "$CONF:$LIB/*:$SERVER_HOME/job.jar" $JAVA_OPTIONS $SERVER_MAIN_CLASS $CONF/application.yml >>${SERVER_LOG_DIR}/${NAME}${SERVER_LOG_SUFIX}.out 2>&1
 	echo "$SERVER_NAME started"
 }
 

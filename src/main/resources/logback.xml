@@ -3,27 +3,71 @@
 <configuration>
     <if condition='isDefined("logDir")'>
         <then>
-            <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <File>${logDir}/worker.log</File>
+            <!--<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+                <!--<file>${server_log_dir}/dog${server_log_sufix}.log</file>-->
+                <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+                    <!--&lt;!&ndash; daily rollover &ndash;&gt;-->
+                    <!--<fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+                    <!--&lt;!&ndash; keep 30 days' worth of history &ndash;&gt;-->
+                    <!--<maxHistory>30</maxHistory>-->
+
+                    <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                        <!--&lt;!&ndash; or whenever the file size reaches 100MB &ndash;&gt;-->
+                        <!--<maxFileSize>100MB</maxFileSize>-->
+                    <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+                    <!--<encoder>-->
+                        <!--<pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+                    <!--</encoder>-->
+                    <!--<filter class="ch.qos.logback.core.filter.EvaluatorFilter">-->
+                        <!--<evaluator>-->
+                            <!--<expression>return message.contains("[Stage") || message.trim().isEmpty();</expression>-->
+                        <!--</evaluator>-->
+                        <!--<OnMismatch>NEUTRAL</OnMismatch>-->
+                        <!--<OnMatch>DENY</OnMatch>-->
+                    <!--</filter>-->
+                <!--</rollingPolicy>-->
+
+                <!--<encoder>-->
+                    <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>-->
+                <!--</encoder>-->
+            <!--</appender>-->
+
+
+
+            <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${server_log_dir}/dogs${server_log_sufix}.log</file>
+                <!--<file>${server_log_dir}/analytics${server_log_sufix}.log</file>-->
                 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <!-- daily rollover -->
-                    <fileNamePattern>${logDir}/log/worker.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-                    <!-- keep 30 days' worth of history -->
+                    <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
                     <maxHistory>30</maxHistory>
-
-                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                        <!-- or whenever the file size reaches 100MB -->
-                        <maxFileSize>100MB</maxFileSize>
-                    </timeBasedFileNamingAndTriggeringPolicy>
                 </rollingPolicy>
-
                 <encoder>
-                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+                    <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 </encoder>
+                <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+                    <evaluator>
+                        <expression>return message.contains("[Stage") || message.trim().isEmpty();</expression>
+                    </evaluator>
+                    <OnMismatch>NEUTRAL</OnMismatch>
+                    <OnMatch>DENY</OnMatch>
+                </filter>
             </appender>
 
+            <appender name="ANALYTICS-FILE" class="ch.qos.logback.core.FileAppender">
+                <file>${server_log_dir}/analytics${server_log_sufix}.log</file>
+                <append>true</append>
+                <encoder>
+                    <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+                </encoder>
+            </appender>
+            <!-- additivity=false ensures analytics data only goes to the analytics log -->
+            <logger name="analytics" level="DEBUG" additivity="false">
+                <appender-ref ref="ANALYTICS-FILE"/>
+            </logger>
+
             <root level="INFO">
-                <appender-ref ref="FILE"/>
+                <appender-ref ref="infoAppender"/>
+                <appender-ref ref="ANALYTICS-FILE"/>
             </root>
         </then>
         <else>
